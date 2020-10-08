@@ -1,0 +1,80 @@
+syntax = "proto3";
+package blog;
+
+message LogInRequest {
+    string email=1;
+    string password=2;
+}
+
+message LogInReply {
+    string status =1;
+}
+
+message SignUpRequest {
+    string email=1;
+    string password=2;
+    string passwordCheck=3;
+    string authCode=4;
+}
+
+message SignUpReply {
+    string status =1;
+}
+
+message ModifyUserRequest {
+    string emailPre = 1;
+    string emailNow = 2;
+    string passwordPre = 3;
+    string passwordNow = 4;
+}
+
+message ModifyUserReply {
+    string status = 1;
+}
+
+message PublishRequest {
+    string title = 1;
+    string author = 2;
+    string content = 3;
+}
+
+message PublishReply {
+    string status = 1;
+}
+
+message BlogsRequest {
+    string author = 2;
+}
+
+message Blog {
+    int32 id = 1;
+    string title = 2;
+    string author = 3;
+    string content = 4;
+}
+
+message BlogsReply {
+    repeated Blog blogs = 1;
+}
+
+message ModifyBlogRequest {
+    int32 id = 1;
+    string title = 2;
+    string content = 3;
+}
+
+message ModifyBlogReply {
+    string status = 1;
+}
+
+service Auth {
+    rpc LogIn (LogInRequest) returns (LogInReply) {}
+    rpc SignUp (SignUpRequest) returns (SignUpReply) {}
+    rpc ModifyUser (ModifyUserRequest) returns (ModifyUserReply) {}
+}
+
+service Publish {
+    rpc PublishBlog (PublishRequest) returns (PublishReply) {}
+    rpc GetBlogs (BlogsRequest) returns (BlogsReply) {}
+    rpc ModifyBlog (ModifyBlogRequest) returns (ModifyBlogReply) {}
+}

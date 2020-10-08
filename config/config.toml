@@ -1,0 +1,6 @@
+[Mysql]
+Host = "127.0.0.1"
+User = "root"
+Password = "dqf009."
+DB = "heguang"
+Port = "3306"
