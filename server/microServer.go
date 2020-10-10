@@ -1,7 +1,7 @@
 package main
 
 import (
-	mpb "github.com/DQFSN/blog/api/micro"
+	mpb "github.com/DQFSN/blog/proto/micro"
 	"github.com/DQFSN/blog/server/microimp"
 	micro "github.com/micro/go-micro/v2"
 	"log"

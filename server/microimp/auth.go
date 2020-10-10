@@ -5,7 +5,7 @@ import (
 	"github.com/DQFSN/blog/server/model"
 	"strings"
 
-	mpb "github.com/DQFSN/blog/api/micro"
+	mpb "github.com/DQFSN/blog/proto/micro"
 	"context"
 	"fmt"
 )

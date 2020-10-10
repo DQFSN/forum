@@ -1,7 +1,7 @@
 package microimp
 
 import (
-	mpb "github.com/DQFSN/blog/api/micro"
+	mpb "github.com/DQFSN/blog/proto/micro"
 	db "github.com/DQFSN/blog/server/db"
 	"github.com/DQFSN/blog/server/model"
 	"fmt"

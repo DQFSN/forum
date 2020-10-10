@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/micro/go-micro/v2"
-	mpb "github.com/DQFSN/blog/api/micro"
+	mpb "github.com/DQFSN/blog/proto/micro"
 )
 
 func main() {
