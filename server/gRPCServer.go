@@ -1,8 +1,8 @@
 package main
 
 import (
-	gpb "blog/api/grpc"
-	"blog/server/rpcimpl"
+	gpb "github.com/DQFSN/blog/api/grpc"
+	"github.com/DQFSN/blog/server/rpcimpl"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 	"log"

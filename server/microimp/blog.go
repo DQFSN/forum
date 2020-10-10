@@ -1,9 +1,9 @@
 package microimp
 
 import (
-	mpb "blog/api/micro"
-	db "blog/server/db"
-	"blog/server/model"
+	mpb "github.com/DQFSN/blog/api/micro"
+	db "github.com/DQFSN/blog/server/db"
+	"github.com/DQFSN/blog/server/model"
 	"fmt"
 	"golang.org/x/net/context"
 	"log"

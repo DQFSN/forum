@@ -1,8 +1,8 @@
 package main
 
 import (
-	mpb "blog/api/micro"
-	"blog/server/microimp"
+	mpb "github.com/DQFSN/blog/api/micro"
+	"github.com/DQFSN/blog/server/microimp"
 	micro "github.com/micro/go-micro/v2"
 	"log"
 )

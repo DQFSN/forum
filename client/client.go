@@ -1,7 +1,7 @@
 package main
 
 import (
-	"blog/client/rpc"
+	"github.com/DQFSN/blog/client/rpc"
 	"fmt"
 	"os"
 )

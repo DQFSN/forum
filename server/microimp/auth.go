@@ -1,11 +1,11 @@
 package microimp
 
 import (
-	db "blog/server/db"
-	"blog/server/model"
+	db "github.com/DQFSN/blog/server/db"
+	"github.com/DQFSN/blog/server/model"
 	"strings"
 
-	mpb "blog/api/micro"
+	mpb "github.com/DQFSN/blog/api/micro"
 	"context"
 	"fmt"
 )
