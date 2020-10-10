@@ -1,7 +1,7 @@
-package rpcimpl
+package microimp
 
 import (
-	gpb "blog/api/grpc"
+	mpb "blog/api/micro"
 	db "blog/server/db"
 	"blog/server/model"
 	"fmt"
@@ -10,55 +10,58 @@ import (
 )
 
 type BlogServer struct {
-
 }
 
-func (bs *BlogServer) PublishBlog(ctx context.Context, in *gpb.PublishRequest) (*gpb.PublishReply, error) {
+func (bs BlogServer) PublishBlog(ctx context.Context, in *mpb.PublishRequest, out *mpb.PublishReply) error {
 
 	if len(in.Title) > 0 && len(in.Author) > 0 {
 		mysqlDB := db.DB()
 		err := mysqlDB.Create(&model.Blog{Title: in.Title, Content: in.Content, Author: in.Author}).Error
 		if err != nil {
-			return &gpb.PublishReply{
+			out = &mpb.PublishReply{
 				Status: fmt.Sprintf("publish blog : %s", err),
-			},err
+			}
+			return  err
 		}
 
-		return &gpb.PublishReply{
+		out =  &mpb.PublishReply{
 			Status: fmt.Sprintf("publish ok : %s", in.Title),
-		},nil
+		}
+		return nil
 	}
 
 	log.Fatal("publish failed, title or author can not be empty")
-	return &gpb.PublishReply{
+	out = &mpb.PublishReply{
 		Status: fmt.Sprintln("publish failed, title or author can not be empty"),
-	},nil
+	}
+	return nil
 }
 
-func (bs *BlogServer) GetBlogs(ctx context.Context, in *gpb.BlogsRequest) (out *gpb.BlogsReply, err error) {
+func (bs BlogServer) GetBlogs(ctx context.Context, in *mpb.BlogsRequest, out *mpb.BlogsReply)  error {
 	mysqlDB := db.DB()
 
-	var blogs []*gpb.Blog
+	var blogs []*mpb.Blog
 	fmt.Printf("author-->%s\n", in.Author)
 	if len(in.Author) > 0 {
-		mysqlDB.Where(gpb.Blog{Author: in.Author}).Find(&blogs)
-	}else{
-		mysqlDB.Where(gpb.Blog{}).Find(&blogs)
+		mysqlDB.Where(mpb.Blog{Author: in.Author}).Find(&blogs)
+	} else {
+		mysqlDB.Where(mpb.Blog{}).Find(&blogs)
 	}
 
-	return &gpb.BlogsReply{Blogs: blogs},nil
+	out = &mpb.BlogsReply{Blogs: blogs}
+	return  nil
 
 }
 
-func (bs *BlogServer) ModifyBlog(ctx context.Context, in *gpb.ModifyBlogRequest) (out *gpb.ModifyBlogReply, err error) {
+func (bs BlogServer) ModifyBlog(ctx context.Context, in *mpb.ModifyBlogRequest, out *mpb.ModifyBlogReply) (err error) {
 	mysqlDB := db.DB()
 
-	err = mysqlDB.Where(gpb.ModifyBlogRequest{Id: in.Id}).Error
+	err = mysqlDB.Where(mpb.ModifyBlogRequest{Id: in.Id}).Error
 
 	if err != nil {
 		out.Status = fmt.Sprintf("update blog err ：%v", err)
-		return out,nil
+		return nil
 	}
 	out.Status = "update blog Ok"
-	return out,nil
+	return nil
 }

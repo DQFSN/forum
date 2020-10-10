@@ -1,7 +1,7 @@
 package main
 
 import (
-	pb "blog/api"
+	gpb "blog/api/grpc"
 	"blog/server/rpcimpl"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -21,8 +21,8 @@ func main() {
 	}
 
 	s := grpc.NewServer()
-	pb.RegisterAuthServer(s, &rpcimpl.Auth{})
-	pb.RegisterPublishServer(s, &rpcimpl.BlogServer{})
+	gpb.RegisterAuthServer(s, &rpcimpl.Auth{})
+	gpb.RegisterPublishServer(s, &rpcimpl.BlogServer{})
 	reflection.Register(s)
 
 	if err := s.Serve(lis); err != nil {

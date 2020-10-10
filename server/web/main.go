@@ -1,7 +1,7 @@
 package main
 
 import (
-	pb "blog/api"
+	grpc2 "blog/api/grpc"
 	db "blog/server/db"
 	"blog/server/model"
 	"fmt"
@@ -24,13 +24,13 @@ func main() {
 	}
 
 	defer conn.Close()
-	authClient := pb.NewAuthClient(conn)
-	blogClient := pb.NewPublishClient(conn)
+	authClient := grpc2.NewAuthClient(conn)
+	blogClient := grpc2.NewPublishClient(conn)
 
 	//请求blogs
 	router.GET("/blogs", func(ctx *gin.Context) {
 		author := ctx.Query("author")
-		resp, err := blogClient.GetBlogs(ctx, &pb.BlogsRequest{Author: author})
+		resp, err := blogClient.GetBlogs(ctx, &grpc2.BlogsRequest{Author: author})
 		if err != nil {
 			log.Fatalf("Getblogs err %s",err)
 		}
@@ -43,7 +43,7 @@ func main() {
 		pwd := ctx.Query("pwd")
 		pwdCheck := ctx.Query("pwdcheck")
 		authCode := ctx.DefaultQuery("code","000")
-		resp, err := authClient.SignUp(ctx, &pb.SignUpRequest{Email: email, Password: pwd, PasswordCheck: pwdCheck, AuthCode: authCode})
+		resp, err := authClient.SignUp(ctx, &grpc2.SignUpRequest{Email: email, Password: pwd, PasswordCheck: pwdCheck, AuthCode: authCode})
 		if err != nil {
 			log.Fatalf("signUp err %s",err)
 		}
@@ -58,7 +58,7 @@ func main() {
 			emailNow := ctx.Query("emailnow")
 			pwdPre := ctx.Query("pwdpre")
 			pwdNow := ctx.Query("pwdnow")
-			resp, err := authClient.ModifyUser(ctx, &pb.ModifyUserRequest{EmailPre: emailPre, EmailNow: emailNow, PasswordPre: pwdPre, PasswordNow: pwdNow})
+			resp, err := authClient.ModifyUser(ctx, &grpc2.ModifyUserRequest{EmailPre: emailPre, EmailNow: emailNow, PasswordPre: pwdPre, PasswordNow: pwdNow})
 			if err != nil {
 				log.Fatalf("modigy userinfo err %s",err)
 			}
@@ -74,7 +74,7 @@ func main() {
 			author := ctx.Query("author")
 
 			if author == ctx.MustGet(gin.AuthUserKey) {
-				resp, err := blogClient.ModifyBlog(ctx, &pb.ModifyBlogRequest{Id: int32(id), Title: title, Content: content})
+				resp, err := blogClient.ModifyBlog(ctx, &grpc2.ModifyBlogRequest{Id: int32(id), Title: title, Content: content})
 
 				if err != nil {
 					log.Fatalf("modigy blog err %s",err)
