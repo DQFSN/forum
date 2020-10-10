@@ -1,10 +1,10 @@
 package rpcimpl
 
 import (
-	gpb "blog/api/grpc"
-	db "blog/server/db"
-	"blog/server/model"
 	"fmt"
+	gpb "github.com/DQFSN/blog/api/grpc"
+	db "github.com/DQFSN/blog/server/db"
+	"github.com/DQFSN/blog/server/model"
 	"golang.org/x/net/context"
 	"log"
 )

@@ -18,22 +18,16 @@ func (bs BlogServer) PublishBlog(ctx context.Context, in *mpb.PublishRequest, ou
 		mysqlDB := db.DB()
 		err := mysqlDB.Create(&model.Blog{Title: in.Title, Content: in.Content, Author: in.Author}).Error
 		if err != nil {
-			out = &mpb.PublishReply{
-				Status: fmt.Sprintf("publish blog : %s", err),
-			}
+			out.Status = fmt.Sprintf("publish blog : %s", err)
 			return  err
 		}
 
-		out =  &mpb.PublishReply{
-			Status: fmt.Sprintf("publish ok : %s", in.Title),
-		}
+		out.Status= fmt.Sprintf("publish ok : %s", in.Title)
 		return nil
 	}
 
 	log.Fatal("publish failed, title or author can not be empty")
-	out = &mpb.PublishReply{
-		Status: fmt.Sprintln("publish failed, title or author can not be empty"),
-	}
+	out.Status= fmt.Sprintln("publish failed, title or author can not be empty")
 	return nil
 }
 
@@ -48,7 +42,7 @@ func (bs BlogServer) GetBlogs(ctx context.Context, in *mpb.BlogsRequest, out *mp
 		mysqlDB.Where(mpb.Blog{}).Find(&blogs)
 	}
 
-	out = &mpb.BlogsReply{Blogs: blogs}
+	out.Blogs= blogs
 	return  nil
 
 }

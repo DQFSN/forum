@@ -1,7 +1,7 @@
 package rpc
 
 import (
-	grpc2 "github.com/DQFSN/blog/api/grpc"
+	gpb "github.com/DQFSN/blog/api/grpc"
 	"log"
 	"time"
 
@@ -19,11 +19,11 @@ func LogIn(email, pwd string) string {
 		log.Fatalf("did not connect: %v",err)
 	}
 	defer conn.Close()
-	c := grpc2.NewAuthClient(conn)
+	c := gpb.NewAuthClient(conn)
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
-	r, err := c.LogIn(ctx, &grpc2.LogInRequest{Email: email, Password: pwd})
+	r, err := c.LogIn(ctx, &gpb.LogInRequest{Email: email, Password: pwd})
 	if err!=nil {
 		log.Fatalf("could not login: %v",err)
 	}
@@ -38,11 +38,11 @@ func SignUp(email, pwd, pwd2, authCode string) string {
 		log.Fatalf("did not connect: %v",err)
 	}
 	defer conn.Close()
-	c := grpc2.NewAuthClient(conn)
+	c := gpb.NewAuthClient(conn)
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
-	r, err := c.SignUp(ctx, &grpc2.SignUpRequest{Email: email, Password: pwd, PasswordCheck: pwd2, AuthCode: authCode})
+	r, err := c.SignUp(ctx, &gpb.SignUpRequest{Email: email, Password: pwd, PasswordCheck: pwd2, AuthCode: authCode})
 	if err!=nil {
 		log.Fatalf("could not signup: %v",err)
 	}
@@ -58,11 +58,11 @@ func ModifyUser(emailPre, emailNow, pwdPre, pwdNow string) string {
 	}
 
 	defer conn.Close()
-	c := grpc2.NewAuthClient(conn)
+	c := gpb.NewAuthClient(conn)
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
-	r, err := c.ModifyUser(ctx, &grpc2.ModifyUserRequest{EmailPre: emailPre, EmailNow: emailNow, PasswordPre: pwdPre, PasswordNow: pwdNow})
+	r, err := c.ModifyUser(ctx, &gpb.ModifyUserRequest{EmailPre: emailPre, EmailNow: emailNow, PasswordPre: pwdPre, PasswordNow: pwdNow})
 
 	if err != nil {
 		log.Fatalf("could not update: %v",err)

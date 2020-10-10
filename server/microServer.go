@@ -14,7 +14,7 @@ func main() {
 
 	service.Init()
 
-	err := mpb.RegisterAuthHandler(service.Server(), microimp.Auth{})
+	err := mpb.RegisterAuthHandler(service.Server(), microimp.AuthHandler{})
 	if err != nil {
 		log.Fatal(err)
 	}
