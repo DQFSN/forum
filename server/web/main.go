@@ -1,10 +1,10 @@
 package main
 
 import (
+	"fmt"
 	grpc2 "github.com/DQFSN/blog/api/grpc"
 	db "github.com/DQFSN/blog/server/db"
 	"github.com/DQFSN/blog/server/model"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"google.golang.org/grpc"
 	"log"

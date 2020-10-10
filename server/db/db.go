@@ -5,8 +5,8 @@ import (
 	"log"
 	"time"
 
-	"github.com/DQFSN/blog/server/model"
 	"github.com/DQFSN/blog/config"
+	"github.com/DQFSN/blog/server/model"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql" // mysql 驱动
 )

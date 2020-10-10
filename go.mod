@@ -18,6 +18,6 @@ require (
 )
 
 replace (
-	github.com/DQFSN/blog => ./
+	//github.com/DQFSN/blog => ./
 	google.golang.org/grpc => google.golang.org/grpc v1.26.0
 )
