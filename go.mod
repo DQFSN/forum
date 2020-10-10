@@ -1,4 +1,4 @@
-module blog
+module github.com/DQFSN/blog
 
 go 1.15
 
