@@ -1,7 +1,7 @@
 package rpc
 
 import (
-	grpc2 "blog/api/grpc"
+	grpc2 "github.com/DQFSN/blog/api/grpc"
 	"log"
 	"time"
 
