@@ -1,51 +1,64 @@
 package rpcimpl
 
 import (
-	"blog/server/model"
 	"fmt"
+	gpb "github.com/DQFSN/blog/proto/grpc"
+	db "github.com/DQFSN/blog/server/db"
+	"github.com/DQFSN/blog/server/model"
 	"golang.org/x/net/context"
 	"log"
-	pb "blog/api"
-	db "blog/server/db"
 )
 
 type BlogServer struct {
 
 }
 
-func (bs *BlogServer) PublishBlog(ctx context.Context, in *pb.PublishRequest) (*pb.PublishReply, error) {
+func (bs *BlogServer) PublishBlog(ctx context.Context, in *gpb.PublishRequest) (*gpb.PublishReply, error) {
 
 	if len(in.Title) > 0 && len(in.Author) > 0 {
 		mysqlDB := db.DB()
 		err := mysqlDB.Create(&model.Blog{Title: in.Title, Content: in.Content, Author: in.Author}).Error
 		if err != nil {
-			return &pb.PublishReply{
+			return &gpb.PublishReply{
 				Status: fmt.Sprintf("publish blog : %s", err),
 			},err
 		}
 
-		return &pb.PublishReply{
+		return &gpb.PublishReply{
 			Status: fmt.Sprintf("publish ok : %s", in.Title),
 		},nil
 	}
 
 	log.Fatal("publish failed, title or author can not be empty")
-	return &pb.PublishReply{
+	return &gpb.PublishReply{
 		Status: fmt.Sprintln("publish failed, title or author can not be empty"),
 	},nil
 }
 
-func (bs *BlogServer) GetBlogs(ctx context.Context, in *pb.BlogsRequest) (out *pb.BlogsReply, err error) {
+func (bs *BlogServer) GetBlogs(ctx context.Context, in *gpb.BlogsRequest) (out *gpb.BlogsReply, err error) {
 	mysqlDB := db.DB()
 
-	var blogs []*pb.Blog
+	var blogs []*gpb.Blog
 	fmt.Printf("author-->%s\n", in.Author)
 	if len(in.Author) > 0 {
-		mysqlDB.Where(pb.Blog{Author: in.Author}).Find(&blogs)
+		mysqlDB.Where(gpb.Blog{Author: in.Author}).Find(&blogs)
 	}else{
-		mysqlDB.Where(pb.Blog{}).Find(&blogs)
+		mysqlDB.Where(gpb.Blog{}).Find(&blogs)
 	}
 
-	return &pb.BlogsReply{Blogs: blogs},nil
+	return &gpb.BlogsReply{Blogs: blogs},nil
 
+}
+
+func (bs *BlogServer) ModifyBlog(ctx context.Context, in *gpb.ModifyBlogRequest) (out *gpb.ModifyBlogReply, err error) {
+	mysqlDB := db.DB()
+
+	err = mysqlDB.Where(gpb.ModifyBlogRequest{Id: in.Id}).Error
+
+	if err != nil {
+		out.Status = fmt.Sprintf("update blog err ：%v", err)
+		return out,nil
+	}
+	out.Status = "update blog Ok"
+	return out,nil
 }
