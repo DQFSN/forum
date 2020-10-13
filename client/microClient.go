@@ -31,5 +31,5 @@ func main() {
 	fmt.Println("Response: ", rsp.Status)
 
 	// let's delay the process for exiting for reasons you'll see below
-	time.Sleep(time.Second * 5)
+	time.Sleep(time.Second * 2)
 }
