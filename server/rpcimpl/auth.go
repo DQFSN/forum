@@ -5,6 +5,7 @@ import (
 	gpb "github.com/DQFSN/blog/proto/grpc"
 	db "github.com/DQFSN/blog/server/db"
 	"github.com/DQFSN/blog/server/model"
+	"github.com/DQFSN/blog/server/util"
 	"golang.org/x/net/context"
 	"strings"
 )
@@ -23,7 +24,7 @@ func (s *Auth) LogIn(ctx context.Context, in *gpb.LogInRequest) (*gpb.LogInReply
 		return &gpb.LogInReply{Status: fmt.Sprintf( "LogIn : %s %s", in.Email, err)}, err
 	}
 
-	if user.Password ==  in.Password  {
+	if util.ComparePasswords(user.Password,[]byte(in.Password))  {
 		return &gpb.LogInReply{Status: "ok: " + in.Email + " " + in.Password}, nil
 	}
 	return &gpb.LogInReply{Status: "wrong : " + in.Email + " " + in.Password}, nil
@@ -34,7 +35,9 @@ func (s *Auth) SignUp(ctx context.Context, in *gpb.SignUpRequest) (*gpb.SignUpRe
 
 	if strings.Contains(in.Email, "@")  && len(in.Password) > 0 && in.Password == in.PasswordCheck {
 		mysqlDB := db.DB()
-		user := model.User{Email: in.Email, Password: in.Password}
+
+		hashPassword := util.HashAndSalt([]byte(in.Password))
+		user := model.User{Email: in.Email, Password: hashPassword}
 		err := mysqlDB.Create(&user).Error
 		if err != nil {
 			return &gpb.SignUpReply{Status: fmt.Sprintf("insert: %s %s", in.Email, err)}, err
@@ -54,7 +57,7 @@ func (s *Auth) ModifyUser(ctx context.Context, in *gpb.ModifyUserRequest) (*gpb.
 
 		//更新
 		user.Email = in.EmailNow
-		user.Password = in.PasswordNow
+		user.Password = util.HashAndSalt([]byte(in.PasswordNow))
 		err := mysqlDB.Save(&user).Error
 		if err != nil {
 			return &gpb.ModifyUserReply{Status: fmt.Sprintf("update: %s %s", in.EmailPre, err)}, err
