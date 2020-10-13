@@ -3,6 +3,7 @@ package microimp
 import (
 	db "github.com/DQFSN/blog/server/db"
 	"github.com/DQFSN/blog/server/model"
+	"github.com/DQFSN/blog/server/util"
 	"strings"
 
 	mpb "github.com/DQFSN/blog/proto/micro"
@@ -24,7 +25,8 @@ func (auth AuthHandler) LogIn(ctx context.Context, in *mpb.LogInRequest, out *mp
 		return  err
 	}
 
-	if user.Password == in.Password {
+
+	if util.ComparePasswords(user.Password,[]byte(in.Password)) {
 		out.Status =  "ok: " + in.Email + " " + in.Password
 		return  nil
 	}
@@ -37,7 +39,9 @@ func (auth AuthHandler) LogIn(ctx context.Context, in *mpb.LogInRequest, out *mp
 func (auth AuthHandler) SignUp(ctx context.Context, in *mpb.SignUpRequest, out *mpb.SignUpReply) error {
 	if strings.Contains(in.Email, "@") && len(in.Password) > 0 && in.Password == in.PasswordCheck {
 		mysqlDB := db.DB()
-		user := model.User{Email: in.Email, Password: in.Password}
+
+		hashPassword := util.HashAndSalt([]byte(in.Password))
+		user := model.User{Email: in.Email, Password: hashPassword}
 		err := mysqlDB.Create(&user).Error
 		if err != nil {
 			out.Status = fmt.Sprintf("insert: %s %s", in.Email, err)
@@ -59,7 +63,7 @@ func (auth AuthHandler) ModifyUser(ctx context.Context, in *mpb.ModifyUserReques
 
 		//更新
 		user.Email = in.EmailNow
-		user.Password = in.PasswordNow
+		user.Password = util.HashAndSalt([]byte(in.PasswordNow))
 		err := mysqlDB.Save(&user).Error
 		if err != nil {
 			out.Status = fmt.Sprintf("update: %s %s", in.EmailPre, err)

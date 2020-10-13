@@ -12,7 +12,7 @@ require (
 	github.com/micro/go-micro/v2 v2.9.1
 	github.com/micro/micro/v2 v2.9.3 // indirect
 	github.com/stretchr/testify v1.5.1 // indirect
-	golang.org/x/crypto v0.0.0-20200709230013-948cd5f35899 // indirect
+	golang.org/x/crypto v0.0.0-20200709230013-948cd5f35899
 	golang.org/x/net v0.0.0-20201006153459-a7d1128ccaa0
 	google.golang.org/grpc v1.32.0
 	google.golang.org/protobuf v1.25.0

@@ -102,7 +102,7 @@ func main() {
 
 }
 
-//返回所有用户的email和pwd
+//返回所有用户的email和hashPassword
 func getUsers() (account map[string]string) {
 	var users []*model.User
 	db.DB().Where(model.User{}).Find(&users)
