@@ -48,10 +48,13 @@ func main() {
 	//blogClient := pb.NewPublishClient(conn)
 
 	//micro 提供服务
-	service := micro.NewService()
+	service := micro.NewService(
+		micro.Registry(consulReg),
+		)
 	service.Init()
-	authClient := pb.NewAuthService("blog", service.Client())
-	blogClient := pb.NewPublishService("blog", service.Client())
+	authClient := pb.NewAuthService("user service", service.Client())
+	blogClient := pb.NewPublishService("blog service", service.Client())
+
 
 	//请求blogs
 	router.GET("/blogs", func(ctx *gin.Context) {

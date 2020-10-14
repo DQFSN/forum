@@ -21,7 +21,7 @@ func main() {
 	)
 
 	service := micro.NewService(
-		micro.Name("blog srevice"),
+		micro.Name("blog service"),
 		micro.Registry(consulReg),
 	)
 
