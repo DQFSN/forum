@@ -15,6 +15,17 @@ type Mysql struct {
 	Port     string
 }
 
+// Consul 配置
+type Consul struct {
+	Host     string
+	Port     string
+}
+
+// gRPC 配置
+type GRPC struct {
+	Host     string
+	Port     string
+}
 
 // Config 对应config.yml文件的位置
 type Config struct {
@@ -24,6 +35,9 @@ type Config struct {
 	//JobWorkers int    `toml:"job_workers"`
 	//JwtSecret  string `toml:"jwt_secret"`
 	Mysql      `toml:"mysql"`
+	Consul		`toml:"consul"`
+	GRPC		`toml:"grpc"`
+	Host string  `tomal:"host"`
 }
 
 // config

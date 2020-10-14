@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/micro/go-micro/v2"
 	mpb "github.com/DQFSN/blog/proto/micro"
+	"github.com/micro/go-micro/v2"
 )
 
 func main() {

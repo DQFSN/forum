@@ -2,32 +2,47 @@ package main
 
 import (
 	"fmt"
+	"github.com/DQFSN/blog/config"
 	pb "github.com/DQFSN/blog/proto/micro"
-	"github.com/micro/go-micro/v2"
-
-	//pb "github.com/DQFSN/blog/proto/grpc"
 	db "github.com/DQFSN/blog/server/db"
 	"github.com/DQFSN/blog/server/model"
 	"github.com/gin-gonic/gin"
-	//"google.golang.org/grpc"
+	"github.com/micro/go-micro/v2"
+	"github.com/micro/go-micro/v2/registry"
+	"github.com/micro/go-micro/v2/web"
+	"github.com/micro/go-plugins/v2/registry/consul"
 	"log"
 	"strconv"
 )
 
-const (
-	address = "127.0.0.1:50051"
+var (
+	address string
 )
+
+func init() {
+	gRPCConfig := config.Get().GRPC
+	host := gRPCConfig.Host
+	port := gRPCConfig.Port
+	address = host + ":" + port
+}
 
 func main() {
 
+	// 获取consul配置
+	conf := config.Get().Consul
+	host := conf.Host
+	port := conf.Port
+	consulReg := consul.NewRegistry(
+		registry.Addrs(host + ":" + port),
+	)
+
 	router := gin.Default()
 
-	//grpc 提供服务
+	////grpc 提供服务
 	//conn, err := grpc.Dial(address, grpc.WithInsecure())
 	//if err != nil {
 	//	log.Fatalf("connect err %s",err)
 	//}
-	//
 	//defer conn.Close()
 	//authClient := pb.NewAuthClient(conn)
 	//blogClient := pb.NewPublishClient(conn)
@@ -62,7 +77,9 @@ func main() {
 	})
 
 	//需要认证的路由
-	authoriza := router.Group("/user", gin.BasicAuth(getUsers()))
+	//authoriza := router.Group("/user", gin.BasicAuth(getUsers()))
+	//密码hash后BasicAuth不能使用
+	authoriza := router.Group("/user")
 	{
 		authoriza.GET("/modify", func(ctx *gin.Context) {
 			emailPre := ctx.Query("emailpre")
@@ -73,7 +90,9 @@ func main() {
 			if err != nil {
 				log.Fatalf("modigy userinfo err %s", err)
 			}
-			ctx.JSON(200, fmt.Sprintf("%v  %v", resp.Status, ctx.MustGet(gin.AuthUserKey)))
+			ctx.JSON(200, fmt.Sprintf("%v  %v", resp.Status))
+			//密码hash后BasicAuth不能使用
+			//ctx.JSON(200, fmt.Sprintf("%v  %v", resp.Status, ctx.MustGet(gin.AuthUserKey)))
 		})
 
 		authoriza.GET("/modifyblog", func(ctx *gin.Context) {
@@ -97,8 +116,15 @@ func main() {
 
 		})
 	}
+	//router.Run()
 
-	router.Run()
+	server := web.NewService(
+		web.Name("blog web"),
+		web.Address(":8080"),
+		web.Handler(router),
+		web.Registry(consulReg),
+	)
+	server.Run()
 
 }
 

@@ -1,6 +1,16 @@
+Host = ""
+
 [Mysql]
 Host = "127.0.0.1"
 User = "root"
 Password = "dqf009."
 DB = "heguang"
 Port = "3306"
+
+[Consul]
+Host = "127.0.0.1"
+Port = "8500"
+
+[GRPC]
+Host = "127.0.0.1"
+Port = "50051"
