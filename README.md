@@ -9,30 +9,41 @@
 ```
 .
 ├── README.md
-├── api     接口文件
-│   ├── blog.pb.go
-│   └── blog.proto
-├── client  grpc客户端
-│   ├── client.go   客户端主程序main
-│   └── rpc         接口实现
+├── client
+│   ├── client.go
+│   ├── microClient.go
+│   └── rpc
 │       ├── auth.go
 │       └── blog.go
-├── config               配置文件
+├── config
 │   ├── config.go
 │   └── config.toml
 ├── go.mod
 ├── go.sum
-└── server      服务端代码
-    ├── db      数据库定义
+├── proto
+│   ├── blog.proto
+│   ├── grpc
+│   │   └── blog.pb.go
+│   └── micro
+│       ├── blog.pb.go
+│       └── blog.pb.micro.go
+└── server
+    ├── db
     │   └── db.go
-    ├── model   使用到的结构体
-    │   ├── blog.go
-    │   └── user.go
-    ├── rpcimpl 服务端接口实现
+    ├── gRPCServer.go
+    ├── microServer.go
+    ├── microimp
     │   ├── auth.go
     │   └── blog.go
-    ├── server.go   服务端主程序main
-    └── web     gin编写的web服务（路由）
+    ├── model
+    │   ├── blog.go
+    │   └── user.go
+    ├── rpcimpl
+    │   ├── auth.go
+    │   └── blog.go
+    └── web
         └── main.go
+
+12 directories, 23 files
 
 ```
