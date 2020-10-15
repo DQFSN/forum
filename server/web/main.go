@@ -61,9 +61,11 @@ func main() {
 		author := ctx.Query("author")
 		resp, err := blogClient.GetBlogs(ctx, &pb.BlogsRequest{Author: author})
 		if err != nil {
-			log.Fatalf("Getblogs err %s", err)
+			ctx.IndentedJSON(500, err)
+			log.Println("Getblogs err %s", err)
+		}else {
+			ctx.IndentedJSON(200, resp.Blogs)
 		}
-		ctx.IndentedJSON(200, resp.Blogs)
 	})
 
 	//注册
@@ -74,9 +76,11 @@ func main() {
 		authCode := ctx.DefaultQuery("code", "000")
 		resp, err := authClient.SignUp(ctx, &pb.SignUpRequest{Email: email, Password: pwd, PasswordCheck: pwdCheck, AuthCode: authCode})
 		if err != nil {
-			log.Fatalf("signUp err %s", err)
+			ctx.IndentedJSON(500, err)
+			log.Println("signUp err %s", err)
+		}else {
+			ctx.IndentedJSON(200, resp.Status)
 		}
-		ctx.IndentedJSON(200, resp.Status)
 	})
 
 	//需要认证的路由
@@ -91,9 +95,11 @@ func main() {
 			pwdNow := ctx.Query("pwdnow")
 			resp, err := authClient.ModifyUser(ctx, &pb.ModifyUserRequest{EmailPre: emailPre, EmailNow: emailNow, PasswordPre: pwdPre, PasswordNow: pwdNow})
 			if err != nil {
-				log.Fatalf("modigy userinfo err %s", err)
+				log.Println("modigy userinfo err %s", err)
+				ctx.JSON(500, fmt.Sprintf("%v", err))
+			}else {
+				ctx.JSON(200, fmt.Sprintf("%v", resp.Status))
 			}
-			ctx.JSON(200, fmt.Sprintf("%v  %v", resp.Status))
 			//密码hash后BasicAuth不能使用
 			//ctx.JSON(200, fmt.Sprintf("%v  %v", resp.Status, ctx.MustGet(gin.AuthUserKey)))
 		})
@@ -110,9 +116,11 @@ func main() {
 				resp, err := blogClient.ModifyBlog(ctx, &pb.ModifyBlogRequest{Id: int32(id), Title: title, Content: content})
 
 				if err != nil {
-					log.Fatalf("modigy blog err %s", err)
+					log.Println("modigy blog err %s", err)
+					ctx.JSON(500, fmt.Sprintf("%v", err))
+				}else {
+					ctx.JSON(200, fmt.Sprintf("%v  %v", resp.Status, ctx.MustGet(gin.AuthUserKey)))
 				}
-				ctx.JSON(200, fmt.Sprintf("%v  %v", resp.Status, ctx.MustGet(gin.AuthUserKey)))
 			} else {
 				ctx.JSON(200, fmt.Sprintf("你只能修改用户名为 '%v' 的blog  ", ctx.MustGet(gin.AuthUserKey)))
 			}
@@ -123,7 +131,7 @@ func main() {
 
 	server := web.NewService(
 		web.Name("blog web"),
-		web.Address(":8080"),
+		web.Address(":8888"),
 		web.Handler(router),
 		web.Registry(consulReg),
 	)

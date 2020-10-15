@@ -1,12 +1,11 @@
 package microimp
 
 import (
+	"fmt"
 	mpb "github.com/DQFSN/blog/proto/micro"
 	db "github.com/DQFSN/blog/server/db"
 	"github.com/DQFSN/blog/server/model"
-	"fmt"
 	"golang.org/x/net/context"
-	"log"
 )
 
 type BlogServer struct {
@@ -26,8 +25,7 @@ func (bs BlogServer) PublishBlog(ctx context.Context, in *mpb.PublishRequest, ou
 		return nil
 	}
 
-	log.Fatal("publish failed, title or author can not be empty")
-	out.Status= fmt.Sprintln("publish failed, title or author can not be empty")
+	out.Status = fmt.Sprintln("publish failed, title or author can not be empty")
 	return nil
 }
 
@@ -42,7 +40,7 @@ func (bs BlogServer) GetBlogs(ctx context.Context, in *mpb.BlogsRequest, out *mp
 		mysqlDB.Where(mpb.Blog{}).Find(&blogs)
 	}
 
-	out.Blogs= blogs
+	out.Blogs = blogs
 	return  nil
 
 }

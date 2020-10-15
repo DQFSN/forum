@@ -29,15 +29,15 @@ type GRPC struct {
 
 // Config 对应config.yml文件的位置
 type Config struct {
-	//Debug      bool `toml:"debug"`
+	//Online      bool `toml:"debug"`
 	//Port       string
 	//Secret     string
 	//JobWorkers int    `toml:"job_workers"`
 	//JwtSecret  string `toml:"jwt_secret"`
-	Mysql      `toml:"mysql"`
-	Consul		`toml:"consul"`
-	GRPC		`toml:"grpc"`
-	Host string  `tomal:"host"`
+	Mysql  `toml:"mysql"`
+	Consul `toml:"consul"`
+	GRPC   `toml:"grpc"`
+	Host   string `tomal:"host"`
 }
 
 // config
@@ -69,10 +69,19 @@ func SetPath(path string) {
 // 获取文件路径
 func getPath() string {
 
-	// 默认配置文件在同级目录
+	//执行测试用例，onlie为false
+	online := false
 
-	path, _ := os.Getwd()
-	filepath := path + "/config/config.toml"
+	if online {
+		// 默认配置文件在同级目录
+		path, _ := os.Getwd()
+		filepath := path + string(os.PathSeparator) + "config" + string(os.PathSeparator) + "config.toml"
 
-	return filepath
+		return filepath
+	} else {
+
+		filepath := "C:\\Users\\Administrator\\go\\src\\blog\\config\\config.toml"
+		return filepath
+
+	}
 }

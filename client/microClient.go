@@ -3,19 +3,30 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/DQFSN/blog/config"
+	"github.com/micro/go-micro/v2/registry"
 	"time"
 
 	mpb "github.com/DQFSN/blog/proto/micro"
 	"github.com/micro/go-micro/v2"
+	"github.com/micro/go-plugins/v2/registry/consul"
 )
 
 func main() {
-	// create and initialise a new service
-	service := micro.NewService()
+	//consul配置和注册
+	config := config.Get().Consul
+	consulReg := consul.NewRegistry(
+			registry.Addrs(config.Host+":"+config.Port),
+		)
+
+	//此服务的服务注册发现中心设置为consul
+	service := micro.NewService(
+		micro.Registry(consulReg),
+		)
 	service.Init()
 
 	// create the proto client for Auth
-	client := mpb.NewAuthService("blog", service.Client())
+	client := mpb.NewAuthService("user service", service.Client())
 
 	{
 		rsp, err := client.SignUp(context.Background(), &mpb.SignUpRequest{
