@@ -61,9 +61,29 @@ message ModifyBlogRequest {
     int32 id = 1;
     string title = 2;
     string content = 3;
+    string author = 4;
 }
 
 message ModifyBlogReply {
+    string status = 1;
+}
+
+message DelBlogRequest {
+    int32 id = 1;
+    string author = 2;
+}
+
+message DelBlogReply {
+    string status = 1;
+}
+
+
+message DelUserRequest {
+    string email = 1;
+    string password = 2;
+}
+
+message DelUserReply {
     string status = 1;
 }
 
@@ -71,10 +91,12 @@ service Auth {
     rpc LogIn (LogInRequest) returns (LogInReply) {}
     rpc SignUp (SignUpRequest) returns (SignUpReply) {}
     rpc ModifyUser (ModifyUserRequest) returns (ModifyUserReply) {}
+    rpc DelUser (DelUserRequest) returns (DelUserReply) {}
 }
 
 service Publish {
     rpc PublishBlog (PublishRequest) returns (PublishReply) {}
     rpc GetBlogs (BlogsRequest) returns (BlogsReply) {}
     rpc ModifyBlog (ModifyBlogRequest) returns (ModifyBlogReply) {}
+    rpc DelBlog (DelBlogRequest) returns (DelBlogReply) {}
 }

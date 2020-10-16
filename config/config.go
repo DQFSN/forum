@@ -80,7 +80,7 @@ func getPath() string {
 		return filepath
 	} else {
 
-		filepath := "C:\\Users\\Administrator\\go\\src\\blog\\config\\config.toml"
+		filepath := "C:\\Users\\Administrator\\go\\src\\forum\\config\\config.toml"
 		return filepath
 
 	}

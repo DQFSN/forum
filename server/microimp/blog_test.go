@@ -47,19 +47,44 @@ func Test_GetBlogs(t *testing.T) {
 		}
 	}
 }
+
 func Test_ModifyBlog(t *testing.T) {
 
 	blogServer := BlogServer{}
 	requests := []mpb.ModifyBlogRequest{
-		{Title: "",Content: ""},
-		{Title: "sdsda",Content: ""},
-		{Title: "",Content: "dasdad"},
-		{Title: "dadas",Content: "dada"},
+		{Id: 1,Title: "test",Content: "testdsada",Author: "7@q.com"},
+		{Id: 2,Title: "test",Content: "test",Author: "7@q.com"},
+		{Id: 200,Title: "test",Content: "test",Author: "7@q.com"},
+		{Title: "test",Content: "test",Author: "7@q.com"},
+		{Title: "test",Content: "test",Author: ""},
 	}
 
 	reply := mpb.ModifyBlogReply{}
 	for _, in := range requests {
 		err := blogServer.ModifyBlog(context.TODO(), &in, &reply)
+
+		if reply.Status == "" {
+			t.Errorf("测试失败， %v",err)
+		}else {
+			t.Logf("测试成功， %v",reply.Status)
+		}
+	}
+}
+
+
+func Test_DelBlog(t *testing.T) {
+
+	blogServer := BlogServer{}
+	requests := []mpb.DelBlogRequest{
+		{Id: 1, Author: "7@q.com"},
+		{Id: 2, Author: ""},
+		{Id: 100, Author: "7@q.com"},
+		{Author: "7@q.com"},
+	}
+
+	reply := mpb.DelBlogReply{}
+	for _, in := range requests {
+		err := blogServer.DelBolg(context.TODO(), &in, &reply)
 
 		if reply.Status == "" {
 			t.Errorf("测试失败， %v",err)

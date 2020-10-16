@@ -45,6 +45,7 @@ type AuthService interface {
 	LogIn(ctx context.Context, in *LogInRequest, opts ...client.CallOption) (*LogInReply, error)
 	SignUp(ctx context.Context, in *SignUpRequest, opts ...client.CallOption) (*SignUpReply, error)
 	ModifyUser(ctx context.Context, in *ModifyUserRequest, opts ...client.CallOption) (*ModifyUserReply, error)
+	DelUser(ctx context.Context, in *DelUserRequest, opts ...client.CallOption) (*DelUserReply, error)
 }
 
 type authService struct {
@@ -89,12 +90,23 @@ func (c *authService) ModifyUser(ctx context.Context, in *ModifyUserRequest, opt
 	return out, nil
 }
 
+func (c *authService) DelUser(ctx context.Context, in *DelUserRequest, opts ...client.CallOption) (*DelUserReply, error) {
+	req := c.c.NewRequest(c.name, "Auth.DelUser", in)
+	out := new(DelUserReply)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // Server API for Auth service
 
 type AuthHandler interface {
 	LogIn(context.Context, *LogInRequest, *LogInReply) error
 	SignUp(context.Context, *SignUpRequest, *SignUpReply) error
 	ModifyUser(context.Context, *ModifyUserRequest, *ModifyUserReply) error
+	DelUser(context.Context, *DelUserRequest, *DelUserReply) error
 }
 
 func RegisterAuthHandler(s server.Server, hdlr AuthHandler, opts ...server.HandlerOption) error {
@@ -102,6 +114,7 @@ func RegisterAuthHandler(s server.Server, hdlr AuthHandler, opts ...server.Handl
 		LogIn(ctx context.Context, in *LogInRequest, out *LogInReply) error
 		SignUp(ctx context.Context, in *SignUpRequest, out *SignUpReply) error
 		ModifyUser(ctx context.Context, in *ModifyUserRequest, out *ModifyUserReply) error
+		DelUser(ctx context.Context, in *DelUserRequest, out *DelUserReply) error
 	}
 	type Auth struct {
 		auth
@@ -126,6 +139,10 @@ func (h *authHandler) ModifyUser(ctx context.Context, in *ModifyUserRequest, out
 	return h.AuthHandler.ModifyUser(ctx, in, out)
 }
 
+func (h *authHandler) DelUser(ctx context.Context, in *DelUserRequest, out *DelUserReply) error {
+	return h.AuthHandler.DelUser(ctx, in, out)
+}
+
 // Api Endpoints for Publish service
 
 func NewPublishEndpoints() []*api.Endpoint {
@@ -138,6 +155,7 @@ type PublishService interface {
 	PublishBlog(ctx context.Context, in *PublishRequest, opts ...client.CallOption) (*PublishReply, error)
 	GetBlogs(ctx context.Context, in *BlogsRequest, opts ...client.CallOption) (*BlogsReply, error)
 	ModifyBlog(ctx context.Context, in *ModifyBlogRequest, opts ...client.CallOption) (*ModifyBlogReply, error)
+	DelBlog(ctx context.Context, in *DelBlogRequest, opts ...client.CallOption) (*DelBlogReply, error)
 }
 
 type publishService struct {
@@ -182,12 +200,23 @@ func (c *publishService) ModifyBlog(ctx context.Context, in *ModifyBlogRequest, 
 	return out, nil
 }
 
+func (c *publishService) DelBlog(ctx context.Context, in *DelBlogRequest, opts ...client.CallOption) (*DelBlogReply, error) {
+	req := c.c.NewRequest(c.name, "Publish.DelBlog", in)
+	out := new(DelBlogReply)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // Server API for Publish service
 
 type PublishHandler interface {
 	PublishBlog(context.Context, *PublishRequest, *PublishReply) error
 	GetBlogs(context.Context, *BlogsRequest, *BlogsReply) error
 	ModifyBlog(context.Context, *ModifyBlogRequest, *ModifyBlogReply) error
+	DelBlog(context.Context, *DelBlogRequest, *DelBlogReply) error
 }
 
 func RegisterPublishHandler(s server.Server, hdlr PublishHandler, opts ...server.HandlerOption) error {
@@ -195,6 +224,7 @@ func RegisterPublishHandler(s server.Server, hdlr PublishHandler, opts ...server
 		PublishBlog(ctx context.Context, in *PublishRequest, out *PublishReply) error
 		GetBlogs(ctx context.Context, in *BlogsRequest, out *BlogsReply) error
 		ModifyBlog(ctx context.Context, in *ModifyBlogRequest, out *ModifyBlogReply) error
+		DelBlog(ctx context.Context, in *DelBlogRequest, out *DelBlogReply) error
 	}
 	type Publish struct {
 		publish
@@ -217,4 +247,8 @@ func (h *publishHandler) GetBlogs(ctx context.Context, in *BlogsRequest, out *Bl
 
 func (h *publishHandler) ModifyBlog(ctx context.Context, in *ModifyBlogRequest, out *ModifyBlogReply) error {
 	return h.PublishHandler.ModifyBlog(ctx, in, out)
+}
+
+func (h *publishHandler) DelBlog(ctx context.Context, in *DelBlogRequest, out *DelBlogReply) error {
+	return h.PublishHandler.DelBlog(ctx, in, out)
 }

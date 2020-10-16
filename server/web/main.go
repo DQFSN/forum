@@ -104,6 +104,18 @@ func main() {
 			//ctx.JSON(200, fmt.Sprintf("%v  %v", resp.Status, ctx.MustGet(gin.AuthUserKey)))
 		})
 
+		authoriza.GET("/delUser", func(ctx *gin.Context) {
+			email := ctx.Query("email")
+			pwd := ctx.Query("pwd")
+			resp, err := authClient.DelUser(ctx, &pb.DelUserRequest{Email: email,Password: pwd})
+			if resp != nil {
+				log.Println("del userinfo err %s", err)
+				ctx.JSON(500, fmt.Sprintf("%v", err))
+			}else {
+				ctx.JSON(200, fmt.Sprintf("%v", resp.Status))
+			}
+		})
+
 		authoriza.GET("/modifyblog", func(ctx *gin.Context) {
 			idStr := ctx.Query("id")
 			id, _ := strconv.ParseInt(idStr, 10, 32)
@@ -113,7 +125,7 @@ func main() {
 			author := ctx.Query("author")
 
 			if author == ctx.MustGet(gin.AuthUserKey) {
-				resp, err := blogClient.ModifyBlog(ctx, &pb.ModifyBlogRequest{Id: int32(id), Title: title, Content: content})
+				resp, err := blogClient.ModifyBlog(ctx, &pb.ModifyBlogRequest{Id: int32(id), Title: title, Content: content,Author: author})
 
 				if err != nil {
 					log.Println("modigy blog err %s", err)
@@ -123,6 +135,26 @@ func main() {
 				}
 			} else {
 				ctx.JSON(200, fmt.Sprintf("你只能修改用户名为 '%v' 的blog  ", ctx.MustGet(gin.AuthUserKey)))
+			}
+
+		})
+
+		authoriza.GET("/delBolg", func(ctx *gin.Context) {
+			idStr := ctx.Query("id")
+			id, _ := strconv.ParseInt(idStr, 10, 32)
+			author := ctx.Query("author")
+
+			if author == ctx.MustGet(gin.AuthUserKey) {
+				resp, err := blogClient.DelBlog(ctx, &pb.DelBlogRequest{Id: int32(id), Author: author})
+
+				if err != nil {
+					log.Println("del blog err %s", err)
+					ctx.JSON(500, fmt.Sprintf("%v", err))
+				}else {
+					ctx.JSON(200, fmt.Sprintf("%v  %v", resp.Status, ctx.MustGet(gin.AuthUserKey)))
+				}
+			} else {
+				ctx.JSON(200, fmt.Sprintf("你只能删除用户名为 '%v' 的blog  ", ctx.MustGet(gin.AuthUserKey)))
 			}
 
 		})
