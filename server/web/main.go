@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
-	"github.com/DQFSN/blog/config"
-	pb "github.com/DQFSN/blog/proto/micro"
-	db "github.com/DQFSN/blog/server/db"
-	"github.com/DQFSN/blog/server/model"
+	"github.com/DQFSN/forum/config"
+	pb "github.com/DQFSN/forum/proto/micro"
+	db "github.com/DQFSN/forum/server/db"
+	"github.com/DQFSN/forum/server/model"
 	"github.com/gin-gonic/gin"
 	"github.com/micro/go-micro/v2"
 	"github.com/micro/go-micro/v2/registry"

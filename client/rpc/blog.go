@@ -1,7 +1,7 @@
 package rpc
 
 import (
-	grpc2 "github.com/DQFSN/blog/proto/grpc"
+	grpc2 "github.com/DQFSN/forum/proto/grpc"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 	"log"

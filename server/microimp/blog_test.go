@@ -2,7 +2,7 @@ package microimp
 
 import (
 	"context"
-	mpb "github.com/DQFSN/blog/proto/micro"
+	mpb "github.com/DQFSN/forum/proto/micro"
 	"testing"
 )
 

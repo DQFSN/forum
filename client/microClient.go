@@ -3,11 +3,11 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/DQFSN/blog/config"
+	"github.com/DQFSN/forum/config"
 	"github.com/micro/go-micro/v2/registry"
 	"time"
 
-	mpb "github.com/DQFSN/blog/proto/micro"
+	mpb "github.com/DQFSN/forum/proto/micro"
 	"github.com/micro/go-micro/v2"
 	"github.com/micro/go-plugins/v2/registry/consul"
 )

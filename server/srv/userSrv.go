@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/DQFSN/blog/config"
-	mpb "github.com/DQFSN/blog/proto/micro"
-	"github.com/DQFSN/blog/server/microimp"
+	"github.com/DQFSN/forum/config"
+	mpb "github.com/DQFSN/forum/proto/micro"
+	"github.com/DQFSN/forum/server/microimp"
 	micro "github.com/micro/go-micro/v2"
 	"github.com/micro/go-micro/v2/registry"
 	"github.com/micro/go-plugins/v2/registry/consul"

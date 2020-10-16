@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/DQFSN/blog/client/rpc"
+	"github.com/DQFSN/forum/client/rpc"
 	"os"
 )
 

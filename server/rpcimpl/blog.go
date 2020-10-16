@@ -2,9 +2,9 @@ package rpcimpl
 
 import (
 	"fmt"
-	gpb "github.com/DQFSN/blog/proto/grpc"
-	db "github.com/DQFSN/blog/server/db"
-	"github.com/DQFSN/blog/server/model"
+	gpb "github.com/DQFSN/forum/proto/grpc"
+	db "github.com/DQFSN/forum/server/db"
+	"github.com/DQFSN/forum/server/model"
 	"golang.org/x/net/context"
 	"log"
 )

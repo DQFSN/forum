@@ -1,13 +1,13 @@
 package microimp
 
 import (
-	db "github.com/DQFSN/blog/server/db"
-	"github.com/DQFSN/blog/server/model"
-	"github.com/DQFSN/blog/server/util"
+	db "github.com/DQFSN/forum/server/db"
+	"github.com/DQFSN/forum/server/model"
+	"github.com/DQFSN/forum/server/util"
 	"strings"
 	"time"
 
-	mpb "github.com/DQFSN/blog/proto/micro"
+	mpb "github.com/DQFSN/forum/proto/micro"
 	"context"
 	"fmt"
 )

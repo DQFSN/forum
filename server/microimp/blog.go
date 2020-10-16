@@ -2,9 +2,9 @@ package microimp
 
 import (
 	"fmt"
-	mpb "github.com/DQFSN/blog/proto/micro"
-	db "github.com/DQFSN/blog/server/db"
-	"github.com/DQFSN/blog/server/model"
+	mpb "github.com/DQFSN/forum/proto/micro"
+	db "github.com/DQFSN/forum/server/db"
+	"github.com/DQFSN/forum/server/model"
 	"github.com/jinzhu/gorm"
 	"golang.org/x/net/context"
 	"time"

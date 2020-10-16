@@ -1,5 +1,5 @@
-FROM golang:1.52-stretch
-WORKDIR /go/src/github.com/DQFSN/blog
+FROM golang
+WORKDIR /go/src/github.com/DQFSN/forum
 COPY . .
 RUN go build -o /blog/server .
 CMD ["/blog/server"]

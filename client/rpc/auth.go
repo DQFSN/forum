@@ -1,8 +1,8 @@
 package rpc
 
 import (
-	"github.com/DQFSN/blog/config"
-	gpb "github.com/DQFSN/blog/proto/grpc"
+	"github.com/DQFSN/forum/config"
+	gpb "github.com/DQFSN/forum/proto/grpc"
 	"log"
 	"time"
 
