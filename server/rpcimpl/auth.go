@@ -24,7 +24,7 @@ func (s *Auth) LogIn(ctx context.Context, in *gpb.LogInRequest) (*gpb.LogInReply
 		return &gpb.LogInReply{Status: fmt.Sprintf( "LogIn : %s %s", in.Email, err)}, err
 	}
 
-	if util.ComparePasswords(user.Password,[]byte(in.Password))  {
+	if util.ComparePasswords([]byte(in.Email),[]byte(in.Password),user.Password)  {
 		return &gpb.LogInReply{Status: "ok: " + in.Email + " " + in.Password}, nil
 	}
 	return &gpb.LogInReply{Status: "wrong : " + in.Email + " " + in.Password}, nil
@@ -36,7 +36,7 @@ func (s *Auth) SignUp(ctx context.Context, in *gpb.SignUpRequest) (*gpb.SignUpRe
 	if strings.Contains(in.Email, "@")  && len(in.Password) > 0 && in.Password == in.PasswordCheck {
 		mysqlDB := db.DB()
 
-		hashPassword := util.HashAndSalt([]byte(in.Password))
+		hashPassword := util.HashAndSalt([]byte(in.Email), []byte(in.Password))
 		user := model.User{Email: in.Email, Password: hashPassword}
 		err := mysqlDB.Create(&user).Error
 		if err != nil {
@@ -57,7 +57,7 @@ func (s *Auth) ModifyUser(ctx context.Context, in *gpb.ModifyUserRequest) (*gpb.
 
 		//更新
 		user.Email = in.EmailNow
-		user.Password = util.HashAndSalt([]byte(in.PasswordNow))
+		user.Password = util.HashAndSalt([]byte(in.EmailNow), []byte(in.PasswordNow))
 		err := mysqlDB.Save(&user).Error
 		if err != nil {
 			return &gpb.ModifyUserReply{Status: fmt.Sprintf("update: %s %s", in.EmailPre, err)}, err

@@ -84,7 +84,7 @@ func Test_DelBlog(t *testing.T) {
 
 	reply := mpb.DelBlogReply{}
 	for _, in := range requests {
-		err := blogServer.DelBolg(context.TODO(), &in, &reply)
+		err := blogServer.DelBlog(context.TODO(), &in, &reply)
 
 		if reply.Status == "" {
 			t.Errorf("测试失败， %v",err)

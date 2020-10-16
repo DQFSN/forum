@@ -26,6 +26,7 @@ func init() {
 	address = host + ":" + port
 }
 
+
 func main() {
 
 	// 获取consul配置
@@ -50,11 +51,10 @@ func main() {
 	//micro 提供服务
 	service := micro.NewService(
 		micro.Registry(consulReg),
-		)
+	)
 	service.Init()
 	authClient := pb.NewAuthService("user service", service.Client())
 	blogClient := pb.NewPublishService("blog service", service.Client())
-
 
 	//请求blogs
 	router.GET("/blogs", func(ctx *gin.Context) {
@@ -63,7 +63,7 @@ func main() {
 		if err != nil {
 			ctx.IndentedJSON(500, err)
 			log.Println("Getblogs err %s", err)
-		}else {
+		} else {
 			ctx.IndentedJSON(200, resp.Blogs)
 		}
 	})
@@ -74,44 +74,65 @@ func main() {
 		pwd := ctx.Query("pwd")
 		pwdCheck := ctx.Query("pwdcheck")
 		authCode := ctx.DefaultQuery("code", "000")
+
+		if len(email) < 1 || len(pwd) < 1 || len(pwdCheck) < 1 || len(authCode) < 1 {
+			log.Println("failed empty request")
+			ctx.JSON(500, fmt.Sprintf("wrong input"))
+			return
+		}
+
 		resp, err := authClient.SignUp(ctx, &pb.SignUpRequest{Email: email, Password: pwd, PasswordCheck: pwdCheck, AuthCode: authCode})
 		if err != nil {
 			ctx.IndentedJSON(500, err)
 			log.Println("signUp err %s", err)
-		}else {
+		} else {
 			ctx.IndentedJSON(200, resp.Status)
 		}
 	})
 
 	//需要认证的路由
-	//authoriza := router.Group("/user", gin.BasicAuth(getUsers()))
+	authoriza := router.Group("/user", gin.BasicAuth(getUsers()))
 	//密码hash后BasicAuth不能使用
-	authoriza := router.Group("/user")
+	//authoriza := router.Group("/user")
+
 	{
 		authoriza.GET("/modify", func(ctx *gin.Context) {
 			emailPre := ctx.Query("emailpre")
 			emailNow := ctx.Query("emailnow")
 			pwdPre := ctx.Query("pwdpre")
 			pwdNow := ctx.Query("pwdnow")
+
+			if len(emailPre) < 1 || len(emailNow) < 1 || len(pwdPre) < 1 || len(pwdNow) < 1 {
+				log.Println("failed empty request")
+				ctx.JSON(500, fmt.Sprintf("wrong input"))
+				return
+			}
+
 			resp, err := authClient.ModifyUser(ctx, &pb.ModifyUserRequest{EmailPre: emailPre, EmailNow: emailNow, PasswordPre: pwdPre, PasswordNow: pwdNow})
 			if err != nil {
 				log.Println("modigy userinfo err %s", err)
 				ctx.JSON(500, fmt.Sprintf("%v", err))
-			}else {
+			} else {
 				ctx.JSON(200, fmt.Sprintf("%v", resp.Status))
 			}
 			//密码hash后BasicAuth不能使用
-			//ctx.JSON(200, fmt.Sprintf("%v  %v", resp.Status, ctx.MustGet(gin.AuthUserKey)))
+			ctx.JSON(200, fmt.Sprintf("%v  %v", resp.Status, ctx.MustGet(gin.AuthUserKey)))
 		})
 
 		authoriza.GET("/delUser", func(ctx *gin.Context) {
 			email := ctx.Query("email")
 			pwd := ctx.Query("pwd")
-			resp, err := authClient.DelUser(ctx, &pb.DelUserRequest{Email: email,Password: pwd})
+
+			if len(email) < 1 || len(pwd) < 1 {
+				log.Println("del userinfo failed empty request")
+				ctx.JSON(500, fmt.Sprintf("wrong input"))
+				return
+			}
+			resp, err := authClient.DelUser(ctx, &pb.DelUserRequest{Email: email, Password: pwd})
 			if resp != nil {
-				log.Println("del userinfo err %s", err)
+				log.Printf("del userinfo err %v \n", err)
 				ctx.JSON(500, fmt.Sprintf("%v", err))
-			}else {
+			} else {
 				ctx.JSON(200, fmt.Sprintf("%v", resp.Status))
 			}
 		})
@@ -124,13 +145,19 @@ func main() {
 			content := ctx.Query("content")
 			author := ctx.Query("author")
 
+			if len(idStr) < 1 || len(author) < 1 {
+				log.Println("failed empty request")
+				ctx.JSON(500, fmt.Sprintf("wrong input"))
+				return
+			}
+
 			if author == ctx.MustGet(gin.AuthUserKey) {
-				resp, err := blogClient.ModifyBlog(ctx, &pb.ModifyBlogRequest{Id: int32(id), Title: title, Content: content,Author: author})
+				resp, err := blogClient.ModifyBlog(ctx, &pb.ModifyBlogRequest{Id: int32(id), Title: title, Content: content, Author: author})
 
 				if err != nil {
 					log.Println("modigy blog err %s", err)
 					ctx.JSON(500, fmt.Sprintf("%v", err))
-				}else {
+				} else {
 					ctx.JSON(200, fmt.Sprintf("%v  %v", resp.Status, ctx.MustGet(gin.AuthUserKey)))
 				}
 			} else {
@@ -144,13 +171,20 @@ func main() {
 			id, _ := strconv.ParseInt(idStr, 10, 32)
 			author := ctx.Query("author")
 
+
+			if len(idStr) < 1 || len(author) < 1 {
+				log.Println("failed empty request")
+				ctx.JSON(500, fmt.Sprintf("wrong input"))
+				return
+			}
+
 			if author == ctx.MustGet(gin.AuthUserKey) {
 				resp, err := blogClient.DelBlog(ctx, &pb.DelBlogRequest{Id: int32(id), Author: author})
 
 				if err != nil {
 					log.Println("del blog err %s", err)
 					ctx.JSON(500, fmt.Sprintf("%v", err))
-				}else {
+				} else {
 					ctx.JSON(200, fmt.Sprintf("%v  %v", resp.Status, ctx.MustGet(gin.AuthUserKey)))
 				}
 			} else {

@@ -83,7 +83,7 @@ func (bs BlogServer) ModifyBlog(ctx context.Context, in *mpb.ModifyBlogRequest, 
 
 
 
-func (bs BlogServer) DelBolg(ctx context.Context, in *mpb.DelBlogRequest, out *mpb.DelBlogReply) (err error) {
+func (bs BlogServer) DelBlog(ctx context.Context, in *mpb.DelBlogRequest, out *mpb.DelBlogReply) (err error) {
 
 	//过滤无效请求
 	if in.Id == 0 || in.Author == "" {
