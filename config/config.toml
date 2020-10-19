@@ -2,9 +2,9 @@ Host = ""
 
 [Mysql]
 Host = "127.0.0.1"
-User = "root"
-Password = "dqf009."
-DB = "heguang"
+User = ""
+Password = ""
+DB = ""
 Port = "3306"
 
 [Consul]

@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/DQFSN/blog/config"
-	gpb "github.com/DQFSN/blog/proto/grpc"
-	"github.com/DQFSN/blog/server/rpcimpl"
+	"github.com/DQFSN/forum/config"
+	gpb "github.com/DQFSN/forum/proto/grpc"
+	"github.com/DQFSN/forum/server/rpcimpl"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 	"log"

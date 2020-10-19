@@ -1,4 +1,4 @@
-package main
+package srv
 
 import (
 	"github.com/DQFSN/forum/config"
@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-func main() {
+func UserSrvRun() {
 
 	// 获取consul配置
 	conf := config.Get().Consul

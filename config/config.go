@@ -70,7 +70,7 @@ func SetPath(path string) {
 func getPath() string {
 
 	//执行测试用例，onlie为false
-	online := false
+	online := true
 
 	if online {
 		// 默认配置文件在同级目录

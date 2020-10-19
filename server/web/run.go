@@ -1,4 +1,4 @@
-package main
+package web
 
 import (
 	"fmt"
@@ -27,7 +27,7 @@ func init() {
 }
 
 
-func main() {
+func Run() {
 
 	// 获取consul配置
 	conf := config.Get().Consul
