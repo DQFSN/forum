@@ -10,5 +10,3 @@ RUN cd /go/pkg/mod/github.com/micro/go-plugins/ && mv go-plugins-wrapper-validat
 RUN go mod tidy
 
 RUN go run server/start.go
-
-
