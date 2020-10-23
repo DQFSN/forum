@@ -10,7 +10,7 @@ import (
 	"github.com/micro/go-micro/v2"
 	"github.com/micro/go-micro/v2/registry"
 	"github.com/micro/go-micro/v2/web"
-	"github.com/micro/go-plugins/v2/registry/consul"
+	"github.com/micro/go-plugins/registry/consul/v2"
 	"log"
 	"strconv"
 )

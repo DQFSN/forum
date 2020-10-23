@@ -490,8 +490,9 @@ github.com/micro/go-micro v1.18.0/go.mod h1:klwUJL1gkdY1MHFyz+fFJXn52dKcty4hoe95
 github.com/micro/go-micro/v2 v2.0.0/go.mod h1:v7QP5UhKRt37ixjJe8DouWmg0/eE6dltr5h0idJ9BpE=
 github.com/micro/go-micro/v2 v2.9.1 h1:+S9koIrNWARjpP6k2TZ7kt0uC9zUJtNXzIdZTZRms7Q=
 github.com/micro/go-micro/v2 v2.9.1/go.mod h1:x55ZM3Puy0FyvvkR3e0ha0xsE9DFwfPSUMWAIbFY0SY=
-github.com/micro/go-plugins/registry/consul v0.0.0-20200119172437-4fe21aa238fd h1:q5pybBgihtxJ+I68Vh51MJXcTGoV9jy58HkDryCLnb4=
-github.com/micro/go-plugins/registry/consul v0.0.0-20200119172437-4fe21aa238fd/go.mod h1:bkvNpEhsto1LZTuTcDZzfngUYBE7cHBxQJNdUOJJaMY=
+github.com/micro/go-plugins v1.5.1 h1:swcFD7ynCTUo98APqIEIbPu2XMd6yVGTnI8PqdnCwOQ=
+github.com/micro/go-plugins/registry/consul/v2 v2.9.1 h1:3IRsR8B9rEsjY4UXvhlkItEi0F/48LBOGdF3J8qLPMY=
+github.com/micro/go-plugins/registry/consul/v2 v2.9.1/go.mod h1:k+12oSCZwN0lYcWeiJ2Y12FWLP02fwJEJk6+EV5n6Io=
 github.com/micro/go-plugins/v2 v2.0.0 h1:QbzQBaOVNtAIhjTgtLoOHtlhcwNFbcJenEsT66IwpkQ=
 github.com/micro/go-plugins/v2 v2.0.0/go.mod h1:f8O+9AyBsTrBK2jmX/cjRwMIbdqmHQZnZwuogyKWB6M=
 github.com/micro/mdns v0.3.0 h1:bYycYe+98AXR3s8Nq5qvt6C573uFTDPIYzJemWON0QE=
