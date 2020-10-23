@@ -26,7 +26,7 @@
 ### 启动方式
 - dockerfile
 #### 或
-- 先执行env.go,修改包依赖
+- go mod tidy
 - 然后执行server/start.go文件
 
 ## 目录结构
