@@ -15,7 +15,7 @@
 
 ### 问题解决
 >module github.com/micro/go-plugins/v2@latest found (v2.0.0), but does not contain package github.com/micro/go-plugins/v2/registry/consul
-到GitHub下载go-plugins的v2最后一版，替换v2文件夹下的内容即可
+>~~到GitHub下载go-plugins的v2最后一版，替换v2文件夹下的内容即可~~ 
 >## 发现其他的版本标签是“路径”+“版本”，go-micro是“前缀”+“版本”+“路径”
 
 
